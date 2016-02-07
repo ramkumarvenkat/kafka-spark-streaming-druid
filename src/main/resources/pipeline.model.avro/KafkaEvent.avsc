@@ -1,0 +1,13 @@
+{"namespace": "pipeline.model.avro",
+ "type": "record",
+ "name": "KafkaEvent",
+ "fields": [
+    {
+     "name": "data",
+     "type":{
+        "type": "map",
+        "values": "string"
+      }
+    }
+  ]
+}

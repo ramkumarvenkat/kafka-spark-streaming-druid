@@ -1,0 +1,26 @@
+version: '2'
+services:
+  kafka:
+    image: spotify/kafka
+    hostname: kafka
+    ports:
+      - "2181:2181" #Exposing zookeeper's ports for debugging
+      - "6092:9092" #Exposing Kafka broker's port
+    environment:
+      - ADVERTISED_HOST=10.24.48.147 #TODO - replace with variable substitution of docker host's ip
+      - ADVERTISED_PORT=6092
+  druid:
+    image: imply/imply
+    hostname: druid
+    ports:
+      - "3181:2181" #Exposing zookeeper's ports for debugging
+      - "9081-9110:8081-8110" #Exposing all of Druid's ports to view the console - use 9081 for coordinator console, 9090 for indexer console, 9082 for broker query
+  spark:
+    image: sequenceiq/spark:1.6.0
+    hostname: spark
+    ports:
+      - "8088:8088" #YARN Resource manager
+      - "8042:8042" #YARN Node manager
+    volumes:
+      - /home/rvenkataraman/lambda-docker-poc/spark-job:/usr/local/jobs #TODO - use args or variable substitution
+    command: -d #Starting it as daemon, so the container doesn't get killed after start

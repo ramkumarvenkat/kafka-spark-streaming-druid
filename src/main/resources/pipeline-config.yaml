@@ -1,0 +1,42 @@
+zookeeper: "kafka:2181"
+kafka:
+  topic: "lambda-pipeline-topic"
+  broker: "kafka:9092"
+spark:
+  appname: "lambda-pipeline"
+  master: "yarn-client"
+  durationS: 10
+  checkpoint: "/tmp/checkpoints/lambda-pipeline"
+  kafka:
+    group: "lambda-pipeline-kafka-consumer-group"
+    properties:
+      - property: "zookeeper.connection.timeout.ms"
+        value: "1000"
+      - property: "refresh.leader.backoff.ms"
+        value: "500"
+druid:
+  zookeeper: "druid:2181"
+  indexer: "druid/overlord"
+  discovery: "/druid/discovery"
+  datasource: "lambda-pipeline-ingest"
+  curator-retry:
+    baseSleepMs: 100
+    maxSleepMs: 3000
+    retries: 5
+  tuning:
+    segmentGranularity: "HOUR"
+    windowPeriod: "PT10M"
+    partitions: 1
+    replicants: 1
+  timestamp-dimension: "timestamp"
+  rollup:
+    granularity: "MINUTE"
+    aggregators:
+      - type: "LONGSUM"
+        name: "pageviews"
+        field-name: "pv"
+      - type: "LONGSUM"
+        name: "clicks"
+        field-name: "ct"
+    dimension-exclusions:
+      - "timestamp"
