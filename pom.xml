@@ -12,7 +12,7 @@
 		<maven.jar.version>2.3.1</maven.jar.version>
 		<encoding>UTF-8</encoding>
 
-		<avro.maven.version>1.7.7</avro.maven.version>
+		<avro.maven.version>1.11.3</avro.maven.version>
 		<kafka.version>0.8.2.0</kafka.version>
 		<spark.version>2.2.2</spark.version>
 
